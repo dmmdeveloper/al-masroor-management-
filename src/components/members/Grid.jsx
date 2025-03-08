@@ -1,12 +1,11 @@
 import React from "react";
+import Card from "./Card";
 
 function Grid() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 p-2 md:p-4">
       {Array.from({ length: 12 }).map((_, index) => (
-        <div key={index} className="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
-          Item {index + 1}
-        </div>
+    <Card index={index}/>
       ))}
     </div>
   );

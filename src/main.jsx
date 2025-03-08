@@ -11,6 +11,7 @@ const ProtectedRoute = ({ element }) => {
   const isAuthenticated = sessionStorage.getItem('isAuthenticated');
   return isAuthenticated ? element : <Navigate to="/authenticate"  />;
 };
+
 const router = createBrowserRouter(
   createRoutesFromElements(<>
   <Route exact path="/" element={ <ProtectedRoute element={<App/>} />} />  
