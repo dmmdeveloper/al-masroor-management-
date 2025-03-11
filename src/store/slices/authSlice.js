@@ -6,7 +6,6 @@ const initialState =  {
     isAuthenticated:  false, 
     errorMessage : false,
     authCode : "786",
-    members:[]
 }
 
 const authSlice  = createSlice({

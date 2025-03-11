@@ -6,6 +6,7 @@ import { createRoutesFromElements, Route, RouterProvider , createBrowserRouter, 
 import Form from './components/form/Form.jsx'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
+import SingleMember from './pages/SingleMember.jsx'
 
 const ProtectedRoute = ({ element }) => {
   const isAuthenticated = sessionStorage.getItem('isAuthenticated');
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(<>
   <Route exact path="/" element={ <ProtectedRoute element={<App/>} />} />  
   <Route  path='/authenticate' element={<Form/>} />
+  <Route path='/member/:id' element={<SingleMember/>} />
 
   </>)
 )
