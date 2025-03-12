@@ -31,12 +31,13 @@ const memberSlice = createSlice({
     builder.addCase(fetchMembers.fulfilled, (state, action) => {
       state.members = action.payload;
       state.membersLoading = false;
+      console.log(action.payload);
+      
     });
     builder.addCase(fetchMembers.rejected  ,(state , action)=>{
         state.membersError = true;
         state.membersLoading = false;
-
-    })
+    });
   },
 });
 

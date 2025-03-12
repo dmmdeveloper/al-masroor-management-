@@ -6,11 +6,11 @@ import { fetchMembers } from "../../store/slices/membersSlice.js";
 function Grid() {
   const dispatch = useDispatch();
   const {members , membersLoading  ,membersError} =  useSelector( store => store.members)  
-  console.log(members[0]);
+  console.log(members?.[0]);
   
 
   useEffect(()=>{
-    if(!members.length){
+    if(!members?.length){
       dispatch(fetchMembers())
     }
   } , []);
@@ -22,7 +22,6 @@ function Grid() {
         <h1>Error</h1>
         :(
           membersLoading ? 
-          
           Array.from({ length: 8 }).map((_, index) => (
             <CardSkeleton/>
               ))
