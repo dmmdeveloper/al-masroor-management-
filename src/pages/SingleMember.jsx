@@ -5,7 +5,6 @@ import { deleteOne, fetchSingleMember } from "../store/slices/memberSlice";
 import store from "../store/store";
 import { fetchMembers } from "../store/slices/membersSlice";
 
-
 function SingleMember() {
   const { id } = useParams();
   const [zoomedImage, setZoomedImage] = useState(null);
@@ -109,7 +108,7 @@ function SingleMember() {
                 {/* Back  */}
                 {/* Edit  */}
                 {/* Delete */}
-                <AddDeleteEdit id= {member?._id} />
+                <AddDeleteEdit id={member?._id} />
               </div>
             </div>
             {/* Zoomed Image Modal with Controls */}
@@ -147,28 +146,24 @@ function SingleMember() {
 
 export default SingleMember;
 
-function AddDeleteEdit({id}) {
-  const dispatch= useDispatch();
+const AddDeleteEdit = ({ id }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
 
-  const deleteMem =  async ()=>{
-    const result = await dispatch(deleteOne(id))
-    if(result.payload){
-      await dispatch(fetchMembers())
-      navigate("/");
-
+  const deleteMem = async () => {
+    const result = await dispatch(deleteOne(id));
+    if (result.payload) {
+      await dispatch(fetchMembers()); // Refresh members list
+     navigate("/"); // Redirect after deletion
+      setShowPopup(false); // Close popup
     }
-    
-
-  }
-  const {deleteLoading}  = useSelector(store => store.member)
-
+  };
+  const { deleteLoading } = useSelector((store) => store.member);
   return (
     <>
-      {/* Back  */}
-      {/* Edit  */}
-      {/* Delete */}
-      <div className=" w-full flex justify-between">
+      {/* Buttons */}
+      <div className="w-full flex justify-between">
         <Link
           to={"/"}
           className="text-white border py-1 px-3 rounded-md hover:opacity-70 duration-200"
@@ -176,28 +171,49 @@ function AddDeleteEdit({id}) {
           Back
         </Link>
         <Link
-          to={"/edit"}
+          to={`/edit/${id}`}
           className="text-white border py-1 px-3 rounded-md hover:opacity-70 duration-200"
         >
           Edit
         </Link>
         <button
-        onClick={deleteMem}
-          to={"/edit"}
-          className={`text-white border py-1 px-3 rounded-md hover:opacity-70 duration-200 ${deleteLoading? "pointer-events-none cursor-not-allowed":""}`}
-          disabled={deleteLoading}
-        >{
-          deleteLoading ?
-          <span className="animate-pulse h-full w-full pointer-events-none" > Loading.....</span>
-          :
-          "Delete"
-
-        }
+          onClick={() => setShowPopup(true)}
+          className="text-white border py-1 px-3 rounded-md hover:opacity-70 duration-200"
+        >
+          Delete
         </button>
       </div>
+
+      {/* Confirmation Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-center">
+            <h2 className="text-lg font-semibold mb-4">Are you sure?</h2>
+            <p className="text-sm text-gray-300 mb-4">
+              This action cannot be undone.
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={deleteMem}
+                className="bg-red-600 px-4 py-2 rounded-md text-white hover:bg-red-700"
+                disabled={deleteLoading}
+              >
+                {deleteLoading ? "Deleting..." : "Yes, Delete"}
+              </button>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="bg-gray-600 px-4 py-2 rounded-md text-white hover:bg-gray-700"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
-}
+};
+
 function RelativsDetail({
   handleImageClick,
   number,
